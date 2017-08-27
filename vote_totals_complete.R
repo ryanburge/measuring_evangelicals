@@ -15,6 +15,7 @@ cces16$vote16<-Recode(cces16$CC16_410a,"1='Donald Trump';
                     8= 'Evan McMullin'; else = NA")
 
 ## This is White Born Again
+## 12,148 - MOE is +/- .8%
 
 cces16 %>%  filter(pew_bornagain ==1 & race ==1 & complete.cases(vote16)) %>% 
   count(vote16, wt = commonweight_vv_post) %>% 
@@ -33,6 +34,8 @@ vote16          n       weight
 8        Not Vote   10.34328 0.0009970902
 
 ## This is White Born Again Protestants
+## 8,885 - MOE is +/- .97%
+
 
 cces16 %>%  filter(pew_bornagain ==1 & race ==1 & religpew ==1 & complete.cases(vote16)) %>% 
   count(vote16, wt = commonweight_vv_post) %>% 
@@ -63,6 +66,8 @@ cces12$vote12<-Recode(cces12$CC410a,"1='Barack Obama';
                       8= 'Skipped'; else = NA")
 
 ## This is White Born Again
+## 11,726 - MOE is +/- .8%
+
 
 cces12 %>%  filter(pew_bornagain ==1 & race ==1 & complete.cases(vote12)) %>% 
   count(vote12, wt = weight_vv_post) %>% 
@@ -78,6 +83,8 @@ vote12          n       weight
 5     Not Vote    7.58105 0.0008192522
 
 ## This is White Born Again Protestants
+## 9,576 - MOE is +/- .91%
+
 
 cces12 %>%  filter(pew_bornagain ==1 & race ==1 & religpew ==1 & complete.cases(vote12)) %>% 
   count(vote12, wt = weight_vv_post) %>% 
@@ -104,6 +111,7 @@ cces08$vote08<-Recode(cces08$CC410,"1='John McCain';
                       8= 'Not Vote'; else = NA")
 
 ## This is White Born Again
+# 8,732 - MOE is +/- .9%
 
 cces08 %>%  filter(V215 ==1 & V211 ==1 & complete.cases(vote08)) %>% 
   count(vote08, wt = V201) %>% 
@@ -122,6 +130,7 @@ vote08           n       weight
 8 Cynthia McKinney    3.223550 0.0005968155
 
 ## This is White Born Again Protestants
+# 5,642 - MOE is +/- 1.19%
 
 cces08 %>%  filter(V215 ==1 & V211 ==1 & V219 ==1 & complete.cases(vote08)) %>% 
   count(vote08, wt = V201) %>% 

@@ -8,7 +8,7 @@ library(haven)
 
 
 
-cces16 <- read_dta("D://cces/data/cces.dta")
+cces16 <- read_dta("D://cces/data/cces16.dta")
 
 cces08 <- read_dta("D:/cces/data/cces2008.dta")
 
