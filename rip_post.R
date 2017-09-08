@@ -6,6 +6,7 @@ library(extrafont)
 
 
 cces08 <- read_dta("D:/cces/data/cces08.dta")
+cces10 <- read_dta("D:/cces/data/cces10.dta")
 cces12 <- read_dta("D:/cces/data/cces12.dta")
 cces14 <- read_dta("D:/cces/data/cces14.dta")
 cces16 <- read_dta("D:/cces/data/cces16.dta")
@@ -17,6 +18,12 @@ cces08$white <- Recode(cces08$V211, "1=1; else=0")
 cces08$bagain <- Recode(cces08$V215, "1=1; else=0")
 cces08$protestant <- Recode(cces08$V219, "1=1;else=0")
 cces08 <- cces08 %>% mutate(whtbaprot = white + bagain + protestant) %>% mutate(whtbaprot = recode(whtbaprot, "3=1; else=0"))
+
+cces10$white <- Recode(cces10$V211, "1=1; else=0")
+cces10$bagain <- Recode(cces10$V215, "1=1; else=0")
+cces10$protestant <- Recode(cces10$V219, "1=1;else=0")
+cces10 <- cces10 %>% mutate(whtbaprot = white + bagain + protestant) %>% mutate(whtbaprot = recode(whtbaprot, "3=1; else=0"))
+
 
 cces12$white <- Recode(cces12$race, "1=1; else=0")
 cces12$bagain <- Recode(cces12$pew_bornagain, "1=1; else=0")
@@ -34,11 +41,12 @@ cces16$protestant <- Recode(cces16$religpew, "1=1; else=0")
 cces16 <- cces16 %>% mutate(whtbaprot = white + bagain + protestant) %>% mutate(whtbaprot = recode(whtbaprot, "3=1; else=0"))
 
 c1 <-cces08 %>% count(whtbaprot, wt = V201) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2008"))
-c2 <-cces12 %>% count(whtbaprot, wt = weight_vv_post) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2012"))
-c3 <-cces14 %>% count(whtbaprot, wt = weight) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2014"))
-c4 <-cces16 %>% count(whtbaprot, wt = commonweight_vv_post) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2016"))
+c2 <-cces10 %>% count(whtbaprot, wt = V101) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2010"))
+c3 <-cces12 %>% count(whtbaprot, wt = weight_vv_post) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2012"))
+c4 <-cces14 %>% count(whtbaprot, wt = weight) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2014"))
+c5 <-cces16 %>% count(whtbaprot, wt = commonweight_vv_post) %>% mutate(weight = prop.table(n)) %>% filter(whtbaprot ==1) %>% select(weight) %>% mutate(year = c("2016"))
 
-cgraph <- bind_rows(c1, c2, c3, c4) %>% mutate(source = c("CCES")) %>% mutate(year = as.numeric(year))
+cgraph <- bind_rows(c1, c2, c3, c4, c5) %>% mutate(source = c("CCES")) %>% mutate(year = as.numeric(year))
 
 gss$bagain <- Recode(gss$reborn, "1=1; else =0")
 gss$white <- Recode(gss$race, "1=1; else =0")
