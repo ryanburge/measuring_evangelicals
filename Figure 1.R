@@ -1,11 +1,11 @@
 cces16$whtevan <- cces16$evangelical + cces16$white
 cces16$whtevan <- Recode(cces16$whtevan, "2=1; else=0")
-cces16 %>% count(whtevan, wt = commonweight) %>% mutate(weight = prop.table(n))
+cces16 %>% count(whtevan, wt = commonweight_vv) %>% mutate(weight = prop.table(n))
 ## 18.7%
 
 cces16$whtbaprot <- cces16$bagain + cces16$white + cces16$protestant
 cces16$whtbaprot <- Recode(cces16$whtbaprot, "3=1; else=0")
-cces16 %>% count(whtbaprot, wt = commonweight) %>% mutate(weight = prop.table(n))
+cces16 %>% count(whtbaprot, wt = commonweight_vv_post) %>% mutate(weight = prop.table(n))
 ## 16.2%
 
 cces12$whtevan <- cces12$evangelical + cces12$white
