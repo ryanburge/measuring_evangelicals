@@ -23,6 +23,28 @@ c16ba <- c16 %>%
   mutate(sample = c("Self ID")) %>% 
   mutate(survey = c("CCES 2016"))
 
+cces14 <- cces14 %>% 
+  mutate(reborn = recode(pew_bornagain, "1=1; else=0")) %>%
+  mutate(protestant = recode(religpew, "1=1; else=0")) %>% 
+  mutate(baprot = protestant + reborn) %>% 
+  mutate(baprot = recode(baprot, "2=1; else=0"))
+
+# cces16 <- cces16 %>% 
+#   mutate(whtevan = white + evangelical) %>% 
+#   mutate(whtevan= recode(whtevan, "2=1; else=0"))
+
+c14 <- cces14 %>% as_survey_design(weights = weight)
+
+c14e <- c14 %>%
+  summarise(pct = survey_mean(evangelical, vartype = "ci")) %>% 
+  mutate(sample = c("Affiliation")) %>% 
+  mutate(survey = c("CCES 2014"))
+
+c14ba <- c14 %>%
+  summarise(pct = survey_mean(baprot, vartype = "ci")) %>% 
+  mutate(sample = c("Self ID")) %>% 
+  mutate(survey = c("CCES 2014"))
+
 
 cces12 <- cces12 %>% 
   mutate(reborn = recode(pew_bornagain, "1=1; else=0")) %>%
@@ -47,6 +69,31 @@ c12ba <- c12 %>%
   mutate(survey = c("CCES 2012"))
 
 
+cces10 <- cces10 %>% 
+  mutate(protestant = recode(V219, "1=1; else=0")) %>% 
+  mutate(bagain = recode(V215, "1=1; else=0"))
+  
+cces10 <- cces10 %>% 
+  mutate(baprot = protestant + bagain) %>% 
+  mutate(baprot = recode(baprot, "2=1; else=0"))
+
+# cces08 <- cces08 %>% 
+#   mutate(whtevan = white + evangelical) %>% 
+#   mutate(whtevan= recode(whtevan, "2=1; else=0"))
+
+c10 <- cces10 %>% as_survey_design(weights = V101)
+
+c10e <- c10 %>%
+  summarise(pct = survey_mean(evangelical, vartype = "ci")) %>% 
+  mutate(sample = c("Affiliation")) %>% 
+  mutate(survey = c("CCES 2010"))
+
+c10ba <- c10 %>%
+  summarise(pct = survey_mean(baprot, vartype = "ci")) %>% 
+  mutate(sample = c("Self ID")) %>% 
+  mutate(survey = c("CCES 2010"))
+
+
 cces08 <- cces08 %>% 
   mutate(baprot = protestant + bagain) %>% 
   mutate(baprot = recode(baprot, "2=1; else=0"))
@@ -67,7 +114,7 @@ c08ba <- c08 %>%
   mutate(sample = c("Self ID")) %>% 
   mutate(survey = c("CCES 2008"))
 
-cc <- bind_rows(c08ba, c08e, c12ba, c12e, c16ba, c16e)
+cc <- bind_rows(c08ba, c08e, c10ba, c10e, c12ba, c12e, c14ba, c14e, c16ba, c16e)
 
 # 
 # gss <- gss %>% 
@@ -110,4 +157,4 @@ ggplot(total, aes(x=survey, y=pct*100, fill = sample)) + geom_col(position = "do
   scale_fill_manual(values=c("grey","black", "dodgerblue3" )) +  
   guides(fill = guide_legend(reverse = FALSE)) + labs(fill="")  + xlab("Survey and Year") 
 
-ggsave(file="reltrad_all_race_freq.png", type = "cairo-png", width = 15, height = 15)
+ggsave(file="reltrad_all_race_freq.png", type = "cairo-png", width = 20, height = 15)
