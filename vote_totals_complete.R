@@ -5,7 +5,7 @@ library(car)
 
 cces16 <- read_dta("D://cces/data/cces16.dta")
 
-cces16$vote16<-Recode(cces16$CC16_410a,"1='Donald Trump';
+cces16$vote16<-Recode(as.numeric(cces16$CC16_410a),"1='Donald Trump';
                     2='Hillary Clinton';
                     3='Gary Johnson';
                     4='Jill Stein';

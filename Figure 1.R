@@ -100,7 +100,7 @@ cces1 <- bind_rows(ba08, evan08, ba12, evan12, ba16, evan16) %>% select(-n)
 
 
 gss <- read_dta("C:/Users/Ryan Burge/Desktop/gss_reltrad.dta")
-gss <- gss %>% filter(year >= 2010)
+gss <- gss %>% filter(year >= 2008)
 
 gssba <- gss %>% 
   filter(relig ==1 & reborn ==1 & race ==1) %>% 
