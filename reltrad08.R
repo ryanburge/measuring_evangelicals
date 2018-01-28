@@ -1,5 +1,5 @@
 
-cces08 <- read_dta("D://cces/data/cces2008.dta")
+# cces08 <- read_dta("D://cces/data/cces2008.dta")
 
 cces08 <- cces08 %>% 
   mutate(white = recode(V211, "1=1; else=0"))

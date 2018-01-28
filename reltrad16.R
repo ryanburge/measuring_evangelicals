@@ -1,6 +1,10 @@
 
+library(tidyverse)
+library(haven)
+library(car)
 
-cces16 <- read_dta("D://cces/data/cces16.dta")
+
+# cces16 <- read_dta("D://cces/data/cces16.dta")
 
 cces16 <- cces16 %>% 
   mutate(white = recode(race, "1=1; else=0"))

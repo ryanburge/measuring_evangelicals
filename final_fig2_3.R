@@ -1,6 +1,4 @@
 
-
-
 c08 <- cces08 %>% as_survey_design(weights = V201)
 c10 <- cces10 %>% as_survey_design(weights = V101)
 c12 <- cces12 %>% as_survey_design(weights = weight_vv)
@@ -79,15 +77,16 @@ pp <- bind_rows(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
 
 
 gss <- gss %>% 
+  filter(year >=2008) %>% 
   mutate(protestant = recode(relig, "1=1; else=0")) %>% 
   mutate(reborn = recode(reborn, "1=1; else=0")) %>% 
   mutate(baprot =  protestant + reborn) %>% 
   mutate(baprot = recode(baprot, "2=1; else=0"))
 
-gs <- gss %>% as_survey_design(weights = wtssall)
+gs <- gss %>% 
+   as_survey_design(weights = wtssall)
 
 g1 <- gs %>% 
-  filter(year >=2008) %>% 
   filter(evangelical ==1) %>% 
   group_by(year) %>% 
   summarise(mean = survey_mean(partyid, vartype = "ci", na.rm = TRUE)) %>% 
@@ -97,7 +96,6 @@ gs <- gss %>% filter(race != 2) %>%  as_survey_design(weights = wtssall)
 
 
 g2 <- gs %>% 
-  filter(year >=2008) %>%
   filter(baprot ==1) %>% 
   group_by(year) %>% 
   summarise(mean = survey_mean(partyid, vartype = "ci", na.rm = TRUE)) %>% 
@@ -122,54 +120,54 @@ ggplot(total, aes(x = mean, y = survey))  +
   scale_fill_manual(values=c("grey","black", "dodgerblue3" )) +
   scale_x_continuous(limits = c(.5,7.5), breaks = c(1,2,3,4,5,6,7), labels = c("Strong Dem.", "Dem.", "Lean Dem.", "Independent", "Lean Rep.", "Rep.", "Strong. Rep"))
 
-ggsave(file="figure_2.png", type = "cairo-png", width = 15, height = 10)
+ggsave(file="final_figure_2.png", type = "cairo-png", width = 15, height = 10)
 
 
 cces08$attend <- 7 - as.numeric(cces08$V217)
-cces08$attend <- Recode(cces08$attend, "0= 'Do not Know';
-                        1= 'Never';
-                        2= 'Seldom';
-                        3= 'Yearly';
-                        4= 'Monthly';
-                        5= 'Weekly';
-                        6= 'More than Weekly'")
+# cces08$attend <- Recode(cces08$attend, "0= 'Do not Know';
+#                         1= 'Never';
+#                         2= 'Seldom';
+#                         3= 'Yearly';
+#                         4= 'Monthly';
+#                         5= 'Weekly';
+#                         6= 'More than Weekly'")
 
 
 cces10$attend <- 7 - as.numeric(cces10$V217)
-cces10$attend <- Recode(cces10$attend, "0= 'Do not Know';
-                        1= 'Never';
-                        2= 'Seldom';
-                        3= 'Yearly';
-                        4= 'Monthly';
-                        5= 'Weekly';
-                        6= 'More than Weekly'")
+# # cces10$attend <- Recode(cces10$attend, "0= 'Do not Know';
+#                         1= 'Never';
+#                         2= 'Seldom';
+#                         3= 'Yearly';
+#                         4= 'Monthly';
+#                         5= 'Weekly';
+#                         6= 'More than Weekly'")
 
 cces12$attend <- 7 - as.numeric(cces12$pew_churatd)
-cces12$attend <- Recode(cces12$attend, "0= 'Do not Know';
-                        1= 'Never';
-                        2= 'Seldom';
-                        3= 'Yearly';
-                        4= 'Monthly';
-                        5= 'Weekly';
-                        6= 'More than Weekly'")
+# cces12$attend <- Recode(cces12$attend, "0= 'Do not Know';
+#                         1= 'Never';
+#                         2= 'Seldom';
+#                         3= 'Yearly';
+#                         4= 'Monthly';
+#                         5= 'Weekly';
+#                         6= 'More than Weekly'")
 
 cces14$attend <- 7 - as.numeric(cces14$pew_churatd)
-cces14$attend <- Recode(cces14$attend, "0= 'Do not Know';
-                        1= 'Never';
-                        2= 'Seldom';
-                        3= 'Yearly';
-                        4= 'Monthly';
-                        5= 'Weekly';
-                        6= 'More than Weekly'")
+# cces14$attend <- Recode(cces14$attend, "0= 'Do not Know';
+#                         1= 'Never';
+#                         2= 'Seldom';
+#                         3= 'Yearly';
+#                         4= 'Monthly';
+#                         5= 'Weekly';
+#                         6= 'More than Weekly'")
 
 cces16$attend <- 7 - as.numeric(cces16$pew_churatd)
-cces16$attend <- Recode(cces16$attend, "0= 'Do not Know';
-                        1= 'Never';
-                        2= 'Seldom';
-                        3= 'Yearly';
-                        4= 'Monthly';
-                        5= 'Weekly';
-                        6= 'More than Weekly'")
+# cces16$attend <- Recode(cces16$attend, "0= 'Do not Know';
+#                         1= 'Never';
+#                         2= 'Seldom';
+#                         3= 'Yearly';
+#                         4= 'Monthly';
+#                         5= 'Weekly';
+#                         6= 'More than Weekly'")
 
 
 c08 <- cces08 %>% as_survey_design(weights = V201)
@@ -182,6 +180,8 @@ c16 <- cces16 %>% as_survey_design(weights = commonweight_vv)
 
 p1 <- c08 %>% 
   filter(baprot ==1) %>% 
+  filter(V211 != 2) %>% 
+  # filter(attend < 0) %>% 
   summarise(mean = survey_mean(attend, vartype = "ci", na.rm =TRUE)) %>% 
   mutate(type = "Self ID") %>% 
   mutate(survey = "CCES 2008")
@@ -290,6 +290,4 @@ ggplot(total, aes(x = mean, y = survey))  +
   scale_fill_manual(values=c("grey","black", "dodgerblue3" )) +
   scale_x_continuous(limits = c(.5,6.5), breaks = c(1,2,3,4,5,6), labels = c("Never", "Seldom", "Yearly", "Monthly", "Weekly", "Weekly+"))
 
-ggsave(file="figure_3.png", type = "cairo-png", width = 15, height = 10)
-
-
+ggsave(file="final_figure_3.png", type = "cairo-png", width = 15, height = 10)

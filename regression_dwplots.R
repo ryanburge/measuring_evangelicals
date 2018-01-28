@@ -67,13 +67,13 @@ cces12$pid <- cces12$pid7/7
 cces16$pid <- cces16$pid7/7
 
 
-baprot16 <- filter(cces16, protestant ==1 & bagain ==1)
+baprot16 <- filter(cces16, protestant ==1 & bagain ==1 & race !=2)
 evan16 <- filter(cces16, evangelical ==1)
 
-baprot12 <- filter(cces12, protestant ==1 & bagain ==1)
+baprot12 <- filter(cces12, protestant ==1 & bagain ==1 & race !=2)
 evan12 <- filter(cces12, evangelical ==1)
 
-baprot08 <- filter(cces08, protestant ==1 & bagain ==1)
+baprot08 <- filter(cces08, protestant ==1 & bagain ==1 & V211 !=2)
 evan08 <- filter(cces08, evangelical ==1)
 
 reg1 <- glm(abort ~ educ2 + male + age + pid, data = baprot16)
@@ -155,83 +155,43 @@ ggsave(file="c08_dwplot.png", type = "cairo-png", width = 12, height = 8)
 
 #### Doing the same with GSS data
 
-gss10 <- read_dta("C:/Users/Ryan Burge/Dropbox/data/gss10.dta")
-gss12 <- read_dta("C:/Users/Ryan Burge/Dropbox/data/gss12.dta")
-gss14 <- read_dta("C:/Users/Ryan Burge/Dropbox/data/gss14.dta")
-gss16 <- read_dta("D:/cces/data/gss16.dta")
 
 gss$white <- Recode(gss$race, "1=1;else=0")
-gss10$white <- Recode(gss10$race, "1=1;else=0")
-gss12$white <- Recode(gss12$race, "1=1;else=0")
-gss14$white <- Recode(gss14$race, "1=1;else=0")
-gss16$white <- Recode(gss16$race, "1=1;else=0")
 
-gss$bagain <- Recode(gss$bagain, "1=1;else=0")
-gss10$bagain <- Recode(gss10$reborn, "1=1;else=0")
-gss12$bagain <- Recode(gss12$reborn, "1=1;else=0")
-gss14$bagain <- Recode(gss14$reborn, "1=1;else=0")
-gss16$bagain <- Recode(gss16$reborn, "1=1;else=0")
 
-gss$protestant <- Recode(gss$protestant, "1=1;else=0")
-gss10$protestant <- Recode(gss10$relig, "1=1;else=0")
-gss12$protestant <- Recode(gss12$relig, "1=1;else=0")
-gss14$protestant <- Recode(gss14$relig, "1=1;else=0")
-gss16$protestant <- Recode(gss16$relig, "1=1;else=0")
+gss$bagain <- Recode(gss$reborn, "1=1;else=0")
+
+
+gss$protestant <- Recode(gss$relig, "1=1;else=0")
+
 
 gss$abort <- Recode(gss$abany, "1=1;else=0")
-gss10$abort <- Recode(gss10$abany, "1=1; else=0")
-gss12$abort <- Recode(gss12$abany, "1=1; else=0")
-gss14$abort <- Recode(gss14$abany, "1=1; else=0")
-gss16$abort <- Recode(gss16$abany, "1=1; else=0")
+
 
 gss$age2 <- gss$age/89
-gss10$age2 <- gss10$age/89
-gss12$age2 <- gss12$age/89
-gss14$age2 <- gss14$age/89
-gss16$age2 <- gss16$age/89
+
 
 gss$educ2 <- Recode(gss$educ, "1:11 =1; 12=2; 13:14=3; 15=4; 16=5; 17:20=6")
-gss10$educ2 <- Recode(gss10$educ, "1:11 =1; 12=2; 13:14=3; 15=4; 16=5; 17:20=6")
-gss12$educ2 <- Recode(gss12$educ, "1:11 =1; 12=2; 13:14=3; 15=4; 16=5; 17:20=6")
-gss14$educ2 <- Recode(gss14$educ, "1:11 =1; 12=2; 13:14=3; 15=4; 16=5; 17:20=6")
-gss16$educ2 <- Recode(gss16$educ, "1:11 =1; 12=2; 13:14=3; 15=4; 16=5; 17:20=6")
 
-gss$educ2 <- gss10$educ2/6
-gss10$educ2 <- gss10$educ2/6
-gss12$educ2 <- gss12$educ2/6
-gss14$educ2 <- gss14$educ2/6
-gss16$educ2 <- gss16$educ2/6
+
+gss$educ2 <- gss$educ2/6
+
 
 gss$male <- Recode(gss$sex, "1=1; else=0")
-gss10$male <- Recode(gss10$sex, "1=1; else=0")
-gss12$male <- Recode(gss12$sex, "1=1; else=0")
-gss14$male <- Recode(gss14$sex, "1=1; else=0")
-gss16$male <- Recode(gss16$sex, "1=1; else=0")
+
 
 
 gss$pid7 <- gss$partyid + 1 
 gss$pid7[gss$pid7==8] <- NA
 
-gss10$pid7 <- gss10$partyid + 1 
-gss10$pid7[gss10$pid7==8] <- NA
-gss12$pid7 <- gss12$partyid + 1 
-gss12$pid7[gss12$pid7==8] <- NA
-gss14$pid7 <- gss14$partyid + 1 
-gss14$pid7[gss14$pid7==8] <- NA
-gss16$pid7 <- gss16$partyid + 1 
-gss16$pid7[gss16$pid7==8] <- NA
-
 gss$pid7 <- gss$pid7/7
-gss10$pid7 <- gss10$pid7/7
-gss12$pid7 <- gss12$pid7/7
-gss14$pid7 <- gss14$pid7/7
-gss16$pid7 <- gss16$pid7/7
 
-baprot16 <- filter(gss, protestant==1 & bagain==1 & year ==2016)
-baprot14 <- filter(gss, protestant==1 & bagain==1 & year ==2014)
-baprot12 <- filter(gss, protestant==1 & bagain==1 & year ==2012)
-baprot10 <- filter(gss, protestant==1 & bagain==1 & year ==2010)
-baprot08 <- filter(gss, protestant==1 & bagain==1 & year ==2008)
+
+baprot16 <- filter(gss, protestant==1 & bagain==1 & year ==2016 & race !=2)
+baprot14 <- filter(gss, protestant==1 & bagain==1 & year ==2014 & race !=2)
+baprot12 <- filter(gss, protestant==1 & bagain==1 & year ==2012 & race !=2)
+baprot10 <- filter(gss, protestant==1 & bagain==1 & year ==2010 & race !=2)
+baprot08 <- filter(gss, protestant==1 & bagain==1 & year ==2008 & race !=2)
 
 evan16 <- filter(gss, evangelical==1 & year ==2016)
 evan14 <- filter(gss, evangelical==1 & year ==2014)

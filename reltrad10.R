@@ -1,5 +1,5 @@
 
-cces10 <- read_dta("D://cces/data/cces10.dta")
+# cces10 <- read_dta("D://cces/data/cces10.dta")
 
 
 cces10 <- cces10 %>% 
