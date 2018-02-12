@@ -216,19 +216,16 @@ gss %>%
 ###2006 line graph
 ###bar graph
 
-whtevan <- gss %>% group_by(year) %>% count(whtevan, wt = wtssall)  %>% mutate(weight = prop.table(n)) %>% filter(whtevan ==1)
+evan <- gss %>% group_by(year) %>% count(evangelical, wt = wtssall)  %>% mutate(weight = prop.table(n)) %>% filter(evangelical ==1) %>% mutate(group = c("Evangelicals"))
 
-ggplot(whtevan, aes(x=year, y=weight*100)) + geom_line(color = "#53B400", size = 2) +
+ggplot(evan, aes(x=year, y=weight*100, group = group)) + geom_line(color = "black", size = 2) +
   theme(axis.ticks = element_blank()) + ylab("Percent of Respondents") + 
-  theme(legend.position="bottom") +
-  ggtitle("White Evangelicals in the GSS") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  theme(text=element_text(size=28, family="KerkisSans")) + 
-  scale_fill_manual(values=c("dodgerblue3", "firebrick3" )) +  
-  guides(fill = guide_legend(reverse = FALSE)) + labs(fill="")  + xlab("Year")  + 
-  scale_y_continuous(labels = scales::percent) + ylim(0, 30)
+  ggtitle("Evangelicals in the General Social Survey") +
+  labs(fill="")  + xlab("Year")  + 
+  scale_y_continuous(labels = scales::percent) + ylim(0, 30) +
+  long_rb()
 
-ggsave(file="rip_reltrad_gss.png", type = "cairo-png", width = 15, height = 12)
+ggsave(file="rip_reltrad_gss_andy_all.png", type = "cairo-png", width = 15, height = 12)
 
 pd <- position_dodge(width = 0.15)
 
