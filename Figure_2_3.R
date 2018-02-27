@@ -76,13 +76,14 @@ p10 <- c16 %>%
 
 pp <- bind_rows(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
 
-
+gss <- gss %>% filter(year > 2007)
 
 gss <- gss %>% 
   mutate(protestant = recode(relig, "1=1; else=0")) %>% 
   mutate(reborn = recode(reborn, "1=1; else=0")) %>% 
   mutate(baprot =  protestant + reborn) %>% 
-  mutate(baprot = recode(baprot, "2=1; else=0"))
+  mutate(baprot = recode(baprot, "2=1; else=0")) %>% 
+  mutate(pid = partyid + 1)
 
 gs <- gss %>% as_survey_design(weights = wtssall)
 
@@ -90,7 +91,7 @@ g1 <- gs %>%
   filter(year >=2008) %>% 
   filter(evangelical ==1) %>% 
   group_by(year) %>% 
-  summarise(mean = survey_mean(partyid, vartype = "ci", na.rm = TRUE)) %>% 
+  summarise(mean = survey_mean(pid, vartype = "ci", na.rm = TRUE)) %>% 
   mutate(type = c("Affiliation"))
 
 gs <- gss %>% filter(race != 2) %>%  as_survey_design(weights = wtssall)
@@ -100,7 +101,7 @@ g2 <- gs %>%
   filter(year >=2008) %>%
   filter(baprot ==1) %>% 
   group_by(year) %>% 
-  summarise(mean = survey_mean(partyid, vartype = "ci", na.rm = TRUE)) %>% 
+  summarise(mean = survey_mean(pid, vartype = "ci", na.rm = TRUE)) %>% 
   mutate(type = c("Self ID"))
 
 gg <- bind_rows(g1, g2)

@@ -1,6 +1,8 @@
 library(fst)
 library(tidyverse)
 library(car)
+library(survey)
+library(srvyr)
 
 cces08 <- read.fst("C://cces08.fst")
 cces10 <- read.fst("C://cces10.fst")
@@ -18,8 +20,3 @@ source("D://measuring_evangelicals/reltrad16.R")
 
 
 source("D://measuring_evangelicals/making_baprot.R")
-
-
-
-
-
