@@ -22,11 +22,20 @@ cces16 <- cces16 %>%
 
 ### This is code the attendance variable so that higher values = more attendance
 
-cces08$att <- 7 - as.numeric(cces08$V217)
-cces10$att <- 7 - as.numeric(cces10$V217)
-cces12$att <- 7 - as.numeric(cces12$pew_churatd)
-cces14$att <- 7 - as.numeric(cces14$pew_churatd)
-cces16$att <- 7 - as.numeric(cces16$pew_churatd)
+cces08 <- cces08 %>% 
+  mutate(att = recode(V217, "6=0; 5=1; 4=2; 3=3; 2=4; 1=5; else =NA"))
+
+cces10 <- cces10 %>% 
+  mutate(att = recode(V217, "6=0; 5=1; 4=2; 3=3; 2=4; 1=5; else =NA"))
+
+cces12 <- cces12 %>% 
+  mutate(att = recode(pew_churatd, "6=0; 5=1; 4=2; 3=3; 2=4; 1=5; else =NA"))
+
+cces14 <- cces14 %>% 
+  mutate(att = recode(pew_churatd, "6=0; 5=1; 4=2; 3=3; 2=4; 1=5; else =NA"))
+
+cces16 <- cces16 %>% 
+  mutate(att = recode(pew_churatd, "6=0; 5=1; 4=2; 3=3; 2=4; 1=5; else =NA"))
 
 ## Now creating smaller versions of our dataset with only the variables are essential to analysis
 
@@ -163,7 +172,7 @@ ccc <- bind_rows(cc1, cc2)
 ccc$survey <- paste("CCES", ccc$year, sep = " ")
 
 
-gss$att <- Recode(gss$attend, "8=6; 6:7=5; 4:5=4; 3=3; 2=2; 1=1; 0=0")
+gss$att <- Recode(gss$attend, "8=5; 6:7=4; 4:5=3; 3=2; 1:2=1; 0=0; else =NA")
 
 gg1 <- gss %>% 
   filter(year >=2008) %>% 
@@ -195,16 +204,16 @@ ggg$survey <- paste("GSS", ggg$year, sep = " ")
 
 total2 <- bind_rows(ccc, ggg) %>% select(-year)
 
-ggplot(total2, aes(x = mean, y = survey))  +
+ggplot(ggg, aes(x = mean, y = survey))  +
   geom_point(shape=21, size =4, aes(fill = factor(type))) +  theme(legend.title=element_blank()) +
   geom_errorbarh(aes(xmin = lower, xmax=upper), height=.075, size = 1, show.legend = FALSE) +
-  theme(legend.position = "bottom")  + scale_fill_brewer(palette = "Set2") + 
-  labs(x= "Year And Survey", y= "Self Reported Church Attendance", caption = "95% Confidence Intervals Displayed") +
+  theme(legend.position = "bottom")  +  
+  labs(y= "Year And Survey", x= "Self Reported Church Attendance", caption = "95% Confidence Intervals Displayed") +
   ggtitle("Mean Church Attendance of Each Measurement")+ 
   theme(plot.title = element_text(hjust = 0.5))+
   theme(text=element_text(size=24, family="KerkisSans"))  +
   scale_fill_manual(values=c("grey","black", "dodgerblue3" )) +
-  scale_x_continuous(limits = c(.5,6.5), breaks = c(1,2,3,4,5,6), labels = c("Never", "Seldom", "Yearly", "Monthly", "Weekly", "Weekly+"))
+  scale_x_continuous(limits = c(0,5), breaks = c(0,1,2,3,4,5), labels = c("Never", "Seldom", "Yearly", "Monthly", "Weekly", "Weekly+"))
 
 ggsave(file="figure_3.png", type = "cairo-png", width = 15, height = 10)
 
